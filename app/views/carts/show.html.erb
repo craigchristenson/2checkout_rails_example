@@ -1,0 +1,55 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Shopping Cart</h1>
+
+<table id="cart" class="table table-striped">
+  <tr>
+    <th>Product</th>
+    <th>Qty</th>
+    <th class="price">Unit Price</th>
+    <th class="price">Full Price</th>
+  </tr>
+  <% for line_item in @cart.line_items %>
+    <tr class="<%= cycle :odd, :even %>">
+      <td><%=h line_item.product.name %></td>
+      <td class="qty"><%= line_item.quantity %></td>
+      <td class="price"><%= number_to_currency(line_item.unit_price) %></td>
+      <td class="price"><%= number_to_currency(line_item.full_price) %></td>
+    </tr>
+  <% end %>
+  <tr>
+    <td class="total price" colspan="4">
+      Total: <%= number_to_currency @cart.total_price %>
+    </td>
+  </tr>
+</table>
+
+<% payment_service_for @cart.id, '1303908',
+                                   :amount => @cart.total_price,
+                                   :service => :two_checkout,
+                                   :credential2 => 'tango',
+                                   :html => { :id => 'payment-form' } do |service| %>
+
+  <% service.customer :first_name => 'Craig',
+                             :last_name => 'Christenson',
+                             :phone => '(555)555-5555',
+                             :email => 'craig@example.com' %>
+
+  <% service.billing_address :city => 'Ottawa',
+                                    :address1 => '1785 Obrien Rd',
+                                    :address2 => 'test address 2',
+                                    :state => 'OH',
+                                    :country => 'USA',
+                                    :zip => '43123' %>
+
+  <% for line_item in @cart.line_items %>
+    <% service.auto_settle :prod => line_item.product.id.to_s + ',' + line_item.quantity.to_s,
+                         :price => line_item.unit_price,
+                         :name => line_item.product.name,
+                         :description => line_item.product.description %>
+  <% end %>
+
+  <% service.notification_url 'http://localhost:3000/paid' %>
+
+  <input type=submit value=" Pay for your Order ">
+<% end %>
