@@ -73,9 +73,8 @@ The `activemerchant` gem also installs the `money` gem as a dependency.
 
 ###Adding 2Checkout as a Payment Method
 
-The first thing we will do is add the necessary gems and helpers to our environment.
+The first thing we will do is add the necessary gems and helpers to our environment under **/config/enviroment.rb**.
 
-_ruby config/enviroment.rb_
 `
 require File.expand_path('../application', __FILE__)
 
@@ -89,9 +88,7 @@ ActionView::Base.send(:include,
 
 This allows us to use the necessary helpers provided by Active Merchant in our
 application. Next we will include `ActiveMerchant::Billing:Integrations` to
-our carts controller.
-
-ruby app/controllers/carts_controller.rb
+our carts controller under **/app/controllers/carts_controller.rb**.
 
 `
 class CartsController < ApplicationController
@@ -101,9 +98,7 @@ class CartsController < ApplicationController
 
 Now that our carts controller has access to the features provided by Active Merchant, we can
 add the 2Checkout payment method to our carts view using the
-`action_view_helper`.
-
-ruby app/views/show.html.erb
+`action_view_helper` under **/app/views/show.html.erb**.
 
 `
 <p id="notice"><%= notice %></p>
@@ -161,7 +156,6 @@ also add a submit button with the text "Pay for your Order" so that the buyer ca
 the button to pay with 2Checkout. Lets test this and make sure we setup everything
 correctly by loading up our server again and adding some products to our cart.
 
-
 We now have a "Pay for your Order" button that when clicked, passes the buyer
 to 2Checkout to make their payment.
 
@@ -171,9 +165,7 @@ to 2Checkout to make their payment.
 Once the sale is processed successfully, 2Checkout passes the customer and the
 sale parameters back to the approved URL that you setup on the Site Management
 page in your 2Checkout account. We don't have a method yet to handle the
-passback so lets go ahead and create one in our carts controller.
-
-ruby app/conrollers/carts_controller.rb
+passback so lets go ahead and create one in our carts controller under **/app/conrollers/carts_controller.rb**.
 
 `
 class CartsController < ApplicationController
@@ -245,9 +237,7 @@ the cart as successful, create the order, reset the session and redirect the buy
 to their order success page. If the MD5 hash returned from 2Checkout does not match,
 we set the cart status to `failed` and display an error to the buyer.
 
-Lets go ahead and create a route for this method.
-
-ruby config/routes.rb
+Lets go ahead and create a route for this method under **/config/routes.rb**.
 
 `
 ExampleStore::Application.routes.draw do
