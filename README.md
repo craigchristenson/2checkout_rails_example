@@ -7,30 +7,30 @@ into an existing Rails 3.2.2 shopping cart application using the ActiveMerchant 
 ###Setting up the Example Application
 We need an existing example application to demonstrate the integration so lets
 clone the 2checkout-rails-example application.
-``` sh terminal
+`
 $ git clone https://github.com/craigchristenson/2checkout_rails_example
-```
+`
 This repository contains both an example before and after application so that
 we can follow along with the tutorial using the
 2checkout_rails_example_before app and compare the result with the
 2checkout_rails_example_after app. We can start by navigating to the
 2checkout_rails_example_before directory.
-``` sh terminal
+`
 $ cd 2checkout_rails_example/2checkout_rails_example_before
-```
+`
 From here, we run `bundle install` to install the gems from the Gemfile.
-``` sh terminal
+`
 $ bundle install
-```
+`
 We then need to run the migrations and seed the database.
-``` sh terminal
+`
 $ rake db:migrate
 $ rake db:seed
-```
+`
 We can then run the example application.
-``` sh terminal
+`
 $ rails s
-```
+`
 View the application in your browser at
 [http://localhost:3000](http://localhost:3000)
 
@@ -49,15 +49,15 @@ Active Merchant gem.
 First, lets stop the development server in the terminal `Ctrl + C`. Now we can
 add the latest version of the activemerchant gem to our Gemfile.
 
-``` ruby Gemfile
+`
 $ gem 'activemerchant', :git => 'https://github.com/Shopify/active_merchant.git'
-```
+`
 
 Next, we need to install the gem using the `bundle install` command in our terminal.
 
-``` sh terminal
+`
 $ bundle install
-```
+`
 
 The `activemerchant` gem also installs the `money` gem as a dependency which
 we will use in the next section of the tutotial.
@@ -66,7 +66,8 @@ we will use in the next section of the tutotial.
 
 The first thing we will do is add the necessary gems and helpers to our environment.
 
-``` ruby config/enviroment.rb
+ruby config/enviroment.rb
+`
 require File.expand_path('../application', __FILE__)
 
 ExampleStore::Application.initialize!
@@ -75,23 +76,25 @@ require 'active_merchant'
 require 'active_merchant/billing/integrations/action_view_helper'
 ActionView::Base.send(:include,
                       ActiveMerchant::Billing::Integrations::ActionViewHelper)
-```
+`
 
 This allows us to use the necessary helpers provided by Active Merchant in our
 application. Next we will include `ActiveMerchant::Billing:Integrations` to
 our carts controller.
 
-``` ruby app/controllers/carts_controller.rb
+ruby app/controllers/carts_controller.rb
+`
 class CartsController < ApplicationController
   include ActiveMerchant::Billing::Integrations
 ...
-```
+`
 
 Now that our carts controller has access to the features provided by Active Merchant, we can
 add the 2Checkout payment method to our carts view using the
 `action_view_helper`.
 
-``` ruby app/views/show.html.erb
+ruby app/views/show.html.erb
+`
 <p id="notice"><%= notice %></p>
 
 <h1>Shopping Cart</h1>
@@ -133,7 +136,7 @@ add the 2Checkout payment method to our carts view using the
 
   <input type=submit value=" Pay for your Order ">
 <% end %>
-```
+`
 
 Lets take a second to look at what we did here. The `payment_service_for`
 Action View helper defines the payment method being used, the credentials
@@ -159,7 +162,8 @@ sale parameters back to the approved URL that you setup on the Site Management
 page in your 2Checkout account. We don't have a method yet to handle the
 passback so lets go ahead and create one in our carts controller.
 
-``` ruby app/conrollers/carts_controller.rb
+ruby app/conrollers/carts_controller.rb
+`
 class CartsController < ApplicationController
   include ActiveMerchant::Billing::Integrations
 
@@ -218,7 +222,7 @@ class CartsController < ApplicationController
     end
   end
 end
-```
+`
 
 Here we specify our method name `twocheckout_return` and create a new instance of `TwoCheckout::Notification` provided by ActiveMerchant. 
 Here we pass the returned parameters using `request.query_string` and specify our 2Checkout secret word
@@ -231,7 +235,8 @@ we set the cart status to `failed` and display an error to the buyer.
 
 Lets go ahead and create a route for this method.
 
-``` ruby config/routes.rb
+ruby config/routes.rb
+`
 ExampleStore::Application.routes.draw do
   resources :carts
 
@@ -247,7 +252,7 @@ ExampleStore::Application.routes.draw do
 
   root :to => 'products#index'
 end
-```
+`
 Now that we have our return URL route we need to set the path as your 2Checkout
 account's approved URL. Lets login to our 2Checkout account and navigate to the
 Account tab and Site Management subtab. 
@@ -258,9 +263,9 @@ Lets acid test our application with a live sale!
 
 Start up our server _(If it's not started already.)_
 
-``` sh terminal
+`
 $ rails s
-```
+`
 
 Add some products to our cart and click the **Pay for your Order** button and complete the order with 2Checkout.
 
