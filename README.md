@@ -7,9 +7,11 @@ into an existing Rails 3.2.2 shopping cart application using the ActiveMerchant 
 ###Setting up the Example Application
 We need an existing example application to demonstrate the integration so lets
 clone the 2checkout-rails-example application.
+
 `
 $ git clone https://github.com/craigchristenson/2checkout_rails_example
 `
+
 This repository contains both an example before and after application so that
 we can follow along with the tutorial using the
 2checkout_rails_example_before app and compare the result with the
@@ -38,6 +40,7 @@ We can then run the example application.
 `
 $ rails s
 `
+
 View the application in your browser at
 [http://localhost:3000](http://localhost:3000)
 
@@ -66,15 +69,13 @@ Next, we need to install the gem using the `bundle install` command in our termi
 $ bundle install
 `
 
-The `activemerchant` gem also installs the `money` gem as a dependency which
-we will use in the next section of the tutotial.
+The `activemerchant` gem also installs the `money` gem as a dependency.
 
 ###Adding 2Checkout as a Payment Method
 
 The first thing we will do is add the necessary gems and helpers to our environment.
 
-ruby config/enviroment.rb
-
+_ruby config/enviroment.rb_
 `
 require File.expand_path('../application', __FILE__)
 
