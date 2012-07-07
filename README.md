@@ -15,19 +15,26 @@ we can follow along with the tutorial using the
 2checkout_rails_example_before app and compare the result with the
 2checkout_rails_example_after app. We can start by navigating to the
 2checkout_rails_example_before directory.
+
 `
 $ cd 2checkout_rails_example/2checkout_rails_example_before
 `
+
 From here, we run `bundle install` to install the gems from the Gemfile.
+
 `
 $ bundle install
 `
+
 We then need to run the migrations and seed the database.
+
 `
 $ rake db:migrate
 $ rake db:seed
 `
+
 We can then run the example application.
+
 `
 $ rails s
 `
@@ -67,6 +74,7 @@ we will use in the next section of the tutotial.
 The first thing we will do is add the necessary gems and helpers to our environment.
 
 ruby config/enviroment.rb
+
 `
 require File.expand_path('../application', __FILE__)
 
@@ -83,6 +91,7 @@ application. Next we will include `ActiveMerchant::Billing:Integrations` to
 our carts controller.
 
 ruby app/controllers/carts_controller.rb
+
 `
 class CartsController < ApplicationController
   include ActiveMerchant::Billing::Integrations
@@ -94,6 +103,7 @@ add the 2Checkout payment method to our carts view using the
 `action_view_helper`.
 
 ruby app/views/show.html.erb
+
 `
 <p id="notice"><%= notice %></p>
 
@@ -163,6 +173,7 @@ page in your 2Checkout account. We don't have a method yet to handle the
 passback so lets go ahead and create one in our carts controller.
 
 ruby app/conrollers/carts_controller.rb
+
 `
 class CartsController < ApplicationController
   include ActiveMerchant::Billing::Integrations
@@ -236,6 +247,7 @@ we set the cart status to `failed` and display an error to the buyer.
 Lets go ahead and create a route for this method.
 
 ruby config/routes.rb
+
 `
 ExampleStore::Application.routes.draw do
   resources :carts
@@ -253,6 +265,7 @@ ExampleStore::Application.routes.draw do
   root :to => 'products#index'
 end
 `
+
 Now that we have our return URL route we need to set the path as your 2Checkout
 account's approved URL. Lets login to our 2Checkout account and navigate to the
 Account tab and Site Management subtab. 
