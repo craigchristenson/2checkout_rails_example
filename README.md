@@ -6,7 +6,9 @@ into an existing Rails 3.2.2 shopping cart application using the ActiveMerchant 
 
 This repository contains both an example before and after application so that you can easily 
 see the integration changes. If you would like to read a tutorial that explains the integration, 
-please visit the [https://github.com/craigchristenson/2checkout_rails_example/wiki](Wiki).
+please visit the Wiki.
+
+[https://github.com/craigchristenson/2checkout_rails_example/wiki](Wiki).
 
 If you have any questions or concerns, let me know. 
 I will be happy to help with your application and get you up and running.
