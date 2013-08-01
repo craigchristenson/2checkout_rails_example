@@ -6,6 +6,8 @@ gem 'rails', '3.2.2'
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 gem 'sqlite3'
+gem "therubyracer"
+gem "less-rails"
 
 
 # Gems used only for assets and not required
@@ -22,7 +24,7 @@ group :assets do
 end
 
 gem 'jquery-rails'
-gem 'activemerchant', :git => 'https://github.com/Shopify/active_merchant.git'
+gem 'activemerchant', :path => 'C:\Users\chris_000\GitHub\active_merchant'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'

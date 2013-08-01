@@ -31,7 +31,7 @@ class CartsController < ApplicationController
   end
 
   def twocheckout_return
-    notification = TwoCheckout::Notification.new(request.query_string, options = {:credential2 => "tango"})
+    notification = TwoCheckout::Return.new(request.query_string, :credential2 => "tango")
 
     @cart = Cart.find(notification.item_id)
 
@@ -51,5 +51,28 @@ class CartsController < ApplicationController
         @cart.save
       end
     end    
+  end
+
+  def twocheckout_notification
+    notification = TwoCheckout::Notification.new(request.query_string, options = {:credential2 => "tango"})
+
+    @cart = Cart.find(notification.item_id)
+
+    if notification.complete?
+      begin
+        if notification.acknowledge
+          @cart.status = 'success'
+          @cart.purchased_at = Time.now
+          @order = Order.create(:total => params['total'], :card_holder_name => params['card_holder_name'], :order_number => params['order_number'])
+          reset_session
+          redirect_to @order
+        else
+          @cart.status = "failed"
+          render :text =>"Order Failed! MD5 Hash does not match!"
+        end
+      ensure
+        @cart.save
+      end
+    end
   end
 end
